@@ -115,7 +115,7 @@ async def connect_and_listen(
         print(
             "If something is not working as expected, please create an issue and add the above output at:"
         )
-        print("https://github.com/garbled1/pybalboa/issues/")
+        print("https://github.com/natekspencer/pybalboa/issues/")
         print()
 
 
