@@ -17,8 +17,8 @@ classifiers = ["License :: OSI Approved :: Apache Software License"]
 dynamic = ["version"]
 
 [project.urls]
-Homepage = "https://github.com/garbled1/pybalboa"
-Repository = "https://github.com/garbled1/pybalboa"
+Homepage = "https://github.com/natekspencer/pybalboa"
+Repository = "https://github.com/natekspencer/pybalboa"
 
 [dependency-groups]
 dev = [

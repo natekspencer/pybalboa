@@ -37,7 +37,6 @@ Minimal example:
 
   async with pybalboa.SpaClient(spa_host) as spa:
     # read/run spa commands
-  return
 ```
 
 ## Related
