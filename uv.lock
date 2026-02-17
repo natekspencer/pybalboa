@@ -557,7 +557,7 @@ wheels = [
 
 [[package]]
 name = "tox"
-version = "4.37.0"
+version = "4.38.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "cachetools" },
@@ -572,9 +572,9 @@ dependencies = [
     { name = "typing-extensions", marker = "python_full_version < '3.11'" },
     { name = "virtualenv" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/3a/6f/d3f6334cc662097af0f77125be24c372cb709dbc60223c8a415ad4233f8f/tox-4.37.0.tar.gz", hash = "sha256:83fc286d8d838fecd3948f44f748c0ef7b25843908655a5a966766c90ca5264a", size = 215347, upload-time = "2026-02-17T18:38:10.315Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/e6/da/07e37dbbc2087ce6ef48a396b850f251ca6a8fa07143a72d84d77fe6b4ce/tox-4.38.0.tar.gz", hash = "sha256:b053e32eabf09501b0b3903ac8ffe927ec5191304f3a56cff3adc1314c1bb2e7", size = 215498, upload-time = "2026-02-17T20:59:43.491Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/6f/17/db95d15ed01fa2cd7896e94e30c1dc4710e12d6dba6f219e592bad1d47b3/tox-4.37.0-py3-none-any.whl", hash = "sha256:764902e83ab6ac5a44ba54b10e22e2ff7429d193fcd6c90e00abda33e41617f6", size = 183097, upload-time = "2026-02-17T18:38:08.487Z" },
+    { url = "https://files.pythonhosted.org/packages/54/cf/2832669a7df70d19d616e42ce18a583d24e1a5732f4ec9d34c38ec7e3182/tox-4.38.0-py3-none-any.whl", hash = "sha256:0e90b771c609a6b44012ceadbba72ef6e428063707519491e3eae062e3aa1177", size = 183246, upload-time = "2026-02-17T20:59:41.886Z" },
 ]
 
 [[package]]
