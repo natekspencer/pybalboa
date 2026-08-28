@@ -4,7 +4,7 @@
 [![Buy Me A Coffee/Beer](https://img.shields.io/badge/Buy_Me_A_☕/🍺-F16061?style=for-the-badge&logo=ko-fi&logoColor=white&labelColor=grey)](https://ko-fi.com/natekspencer)
 [![Sponsor on GitHub](https://img.shields.io/badge/Sponsor_💜-6f42c1?style=for-the-badge&logo=github&logoColor=white&labelColor=grey)](https://github.com/sponsors/natekspencer)
 
-[![GitHub License](https://img.shields.io/github/license/natekspencer/pybalboa?style=flat-square)](LICENSE)
+[![GitHub License](https://img.shields.io/github/license/garbled1/pybalboa?style=flat-square)](LICENSE)
 [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/pybalboa?style=flat-square)](https://pypi.org/project/pybalboa/)
 ![Pepy Total Downloads](https://img.shields.io/pepy/dt/pybalboa?style=flat-square)
 ![PyPI - Downloads](https://img.shields.io/pypi/dm/pybalboa?style=flat-square)
@@ -50,9 +50,9 @@ I maintain this python project in my spare time. If you find it useful, consider
 - 💜 [Sponsor me on GitHub](https://github.com/sponsors/natekspencer)
 - ☕ [Buy me a coffee / beer](https://ko-fi.com/natekspencer)
 - 💸 [PayPal (direct support)](https://www.paypal.com/paypalme/natekspencer)
-- ⭐ [Star this project](https://github.com/natekspencer/pybalboa)
+- ⭐ [Star this project](https://github.com/garbled1/pybalboa)
 - 📦 If you’d like to support in other ways, such as donating hardware for testing, feel free to [reach out to me](https://github.com/natekspencer)
 
 ## 📈 Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=natekspencer/pybalboa)](https://www.star-history.com/#natekspencer/pybalboa)
+[![Star History Chart](https://api.star-history.com/svg?repos=garbled1/pybalboa)](https://www.star-history.com/#garbled1/pybalboa)

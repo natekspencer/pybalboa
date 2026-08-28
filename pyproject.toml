@@ -20,8 +20,8 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/natekspencer/pybalboa"
-Repository = "https://github.com/natekspencer/pybalboa"
+Homepage = "https://github.com/garbled1/pybalboa"
+Repository = "https://github.com/garbled1/pybalboa"
 
 [dependency-groups]
 dev = [
