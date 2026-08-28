@@ -75,7 +75,10 @@ def default(value: Any, default_value: Any | Callable[[], Any]) -> Any:
 
 
 def localnow() -> datetime:
-    """Get now in local time."""
+    """Get now in local time.
+
+    Returns a timezone-aware datetime using the system's local UTC offset.
+    """
     return utcnow().astimezone()
 
 

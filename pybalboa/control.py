@@ -241,7 +241,7 @@ class FaultLog:
     fault_datetime: datetime = field(init=False)
 
     def __post_init__(self, current_time: datetime | None) -> None:
-        """Compute the fault datetime on initialization."""
+        """Compute the timezone-aware fault datetime on initialization."""
         current_time = current_time or localnow()
         self.fault_datetime = datetime.combine(
             (current_time - timedelta(days=self.days_ago)).date(),

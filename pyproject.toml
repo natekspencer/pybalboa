@@ -15,6 +15,9 @@ keywords = [
 ]
 classifiers = ["License :: OSI Approved :: Apache Software License"]
 dynamic = ["version"]
+dependencies = [
+    "typing-extensions>=4.15.0",
+]
 
 [project.urls]
 Homepage = "https://github.com/natekspencer/pybalboa"

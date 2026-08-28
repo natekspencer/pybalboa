@@ -382,7 +382,7 @@ class SpaClient(EventMixin):
         return self._configuration_loaded.is_set()
 
     def get_current_time(self) -> datetime:
-        """Return the current spa time."""
+        """Return the current timezone-aware spa datetime."""
         return localnow() + self._time_offset
 
     async def async_configuration_loaded(self, timeout: float = 15) -> bool:
