@@ -26,7 +26,7 @@ def byte_parser(
     ]
 
 
-def calculate_checksum(data: bytes) -> int:
+def calculate_checksum(data: bytes | bytearray) -> int:
     """Calculate the checksum byte for a message."""
     crc = 0xB5
     for _, cur in enumerate(data):
@@ -49,7 +49,7 @@ def calculate_time(base_time: time | None, duration: timedelta | None) -> time |
     if base_time is None:
         return None
     duration = duration or timedelta()
-    return (datetime.combine(datetime.now(), base_time) + duration).time()
+    return (datetime.combine(localnow(), base_time) + duration).time()
 
 
 def calculate_time_difference(start: time, end: time) -> int:
@@ -72,6 +72,14 @@ def default(value: Any, default_value: Any | Callable[[], Any]) -> Any:
     if value is not None:
         return value
     return default_value() if callable(default_value) else default_value
+
+
+def localnow() -> datetime:
+    """Get now in local time.
+
+    Returns a timezone-aware datetime using the system's local UTC offset.
+    """
+    return utcnow().astimezone()
 
 
 async def read_one_message(reader: asyncio.StreamReader, timeout: int = 15) -> bytes:

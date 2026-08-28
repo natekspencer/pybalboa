@@ -1,10 +1,12 @@
 """Tests module."""
 
 import asyncio
+from datetime import time, timedelta
 
 from pybalboa.utils import (
     byte_parser,
     calculate_checksum,
+    calculate_time,
     cancel_task,
     default,
     to_celsius,
@@ -27,6 +29,20 @@ def test_calculate_checksum() -> None:
     assert calculate_checksum(value[:-1]) == value[-1]
     value = bytes.fromhex("050ABF0477")
     assert calculate_checksum(value[:-1]) == value[-1]
+
+
+def test_calculate_time() -> None:
+    """Test calculating a time from a start time and duration."""
+    assert calculate_time(base_time=None, duration=None) is None
+
+    base_time = time(hour=7)
+    assert calculate_time(base_time=base_time, duration=None) == base_time
+
+    duration = timedelta(hours=4)
+    assert calculate_time(base_time=base_time, duration=duration) == time(hour=11)
+
+    base_time = time(hour=23)
+    assert calculate_time(base_time=base_time, duration=duration) == time(hour=3)
 
 
 async def test_cancel_task() -> None:

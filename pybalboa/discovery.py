@@ -99,7 +99,7 @@ class SpaDiscoveryProtocol(asyncio.DatagramProtocol):
                 self.spas.append(spa)
             if self.return_once_found:
                 self.discovery_complete.set()
-        except Exception as ex:
+        except Exception as ex:  # noqa: BLE001
             _LOGGER.error(ex)
 
     def error_received(self, exc: Exception) -> None:

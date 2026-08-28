@@ -19,6 +19,7 @@ from .enums import (
     ToggleItemCode,
     UnknownState,
 )
+from .utils import localnow
 
 if TYPE_CHECKING:
     from .client import SpaClient
@@ -70,7 +71,9 @@ FAULT_LOG_ERROR_CODES: Final[dict[int, str]] = {
 class EventMixin:
     """Event mixin."""
 
-    _listeners: dict[str, list[Callable]] = {}
+    def __init__(self) -> None:
+        """Initialize an event mixin."""
+        self._listeners: dict[str, list[Callable]] = {}
 
     def on(  # pylint: disable=invalid-name
         self, event_name: str, callback: Callable
@@ -106,6 +109,7 @@ class SpaControl(EventMixin):
         custom_options: list[IntEnum] | None = None,
     ) -> None:
         """Initialize a spa control."""
+        super().__init__()
         self._client = client
         self._control_type = control_type
         self._index = index
@@ -237,10 +241,11 @@ class FaultLog:
     fault_datetime: datetime = field(init=False)
 
     def __post_init__(self, current_time: datetime | None) -> None:
-        """Compute the fault datetime on initialization."""
+        """Compute the timezone-aware fault datetime on initialization."""
+        current_time = current_time or localnow()
         self.fault_datetime = datetime.combine(
-            (current_time or datetime.now()) - timedelta(days=self.days_ago),
-            time(self.time_hour, self.time_minute),
+            (current_time - timedelta(days=self.days_ago)).date(),
+            time(self.time_hour, self.time_minute, tzinfo=current_time.tzinfo),
         )
 
     def __str__(self) -> str:
