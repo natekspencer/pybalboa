@@ -4,9 +4,12 @@ from __future__ import annotations
 
 import asyncio
 import logging
+from collections.abc import Callable
 from datetime import datetime, time, timedelta
 from random import uniform
-from typing import Any, Callable, TypeVar, cast
+from typing import Any, TypeVar, cast
+
+from typing_extensions import Self
 
 from .control import EVENT_UPDATE, EventMixin, FaultLog, HeatModeSpaControl, SpaControl
 from .discovery import async_discover
@@ -34,9 +37,9 @@ from .utils import (
     calculate_time_difference,
     cancel_task,
     default,
+    localnow,
     read_one_message,
     to_celsius,
-    utcnow,
 )
 
 _LOGGER = logging.getLogger(__name__)
@@ -61,6 +64,7 @@ class SpaClient(EventMixin):
         self, host: str, port: int = DEFAULT_PORT, *, mac_address: str | None = None
     ) -> None:
         """Initialize a spa client."""
+        super().__init__()
         self._host = host
         self._port = port
 
@@ -98,7 +102,7 @@ class SpaClient(EventMixin):
         self._heater_type: str | None = None
         self._model: str | None = None
         self._software_version: str | None = None
-        self._voltage: int | None | None = None
+        self._voltage: int | None = None
 
         # setup parameters
         self._low_range: tuple[tuple[int, int], tuple[float, float]] = (
@@ -154,7 +158,7 @@ class SpaClient(EventMixin):
     def available(self) -> bool:
         """Return True if the client is connected and available."""
         if self.connected and self.last_message_received is not None:
-            return self.last_message_received >= utcnow() - timedelta(seconds=15)
+            return self.last_message_received >= localnow() - timedelta(seconds=15)
         return False
 
     @property
@@ -378,8 +382,8 @@ class SpaClient(EventMixin):
         return self._configuration_loaded.is_set()
 
     def get_current_time(self) -> datetime:
-        """Return the current time."""
-        return datetime.now() + self._time_offset
+        """Return the current timezone-aware spa datetime."""
+        return localnow() + self._time_offset
 
     async def async_configuration_loaded(self, timeout: float = 15) -> bool:
         """Wait for configuration to complete."""
@@ -435,7 +439,7 @@ class SpaClient(EventMixin):
         ) as err:
             msg = "Timed out" if isinstance(err, asyncio.TimeoutError) else err
             _LOGGER.error("%s ## cannot connect: %s", self._host, msg)
-        except Exception as ex:  # pylint: disable=broad-except
+        except Exception as ex:  # pylint: disable=broad-except # noqa: BLE001
             _LOGGER.error("%s ## error connecting: %s", self._host, ex)
         else:
             _LOGGER.debug("%s -- connected", self._host)
@@ -465,7 +469,7 @@ class SpaClient(EventMixin):
             try:
                 await self._writer.wait_closed()
             except Exception:  # pylint: disable=broad-except
-                pass
+                _LOGGER.exception("Unknown exception while waiting for disconnect")
         await cancel_task(self._listener)
         self._reader = self._writer = None
         _LOGGER.debug("%s -- disconnected", self._host)
@@ -482,11 +486,14 @@ class SpaClient(EventMixin):
                 _LOGGER.debug("%s ## %s", self._host, err)
                 continue
             except (asyncio.TimeoutError, asyncio.IncompleteReadError):
-                if not (sent := self._last_message_sent) or sent + wait_time < utcnow():
+                if (
+                    not (sent := self._last_message_sent)
+                    or sent + wait_time < localnow()
+                ):
                     self.emit(EVENT_UPDATE)
                     await self.send_device_present()
                 continue
-            except Exception as ex:  # pylint: disable=broad-except
+            except Exception as ex:  # pylint: disable=broad-except # noqa: BLE001
                 _LOGGER.error("%s ## %s", self._host, ex)
                 continue
             self._process_message(data)
@@ -495,7 +502,7 @@ class SpaClient(EventMixin):
 
     def _process_message(self, data: bytes) -> None:
         """Process a message."""
-        self._last_message_received = utcnow()
+        self._last_message_received = localnow()
         message_type = self._log_message(data)
         data = data[4:-1]
 
@@ -695,7 +702,7 @@ class SpaClient(EventMixin):
         self._time_hour = data[3]
         self._time_minute = data[4]
         if not reprocess:
-            now = datetime.now()
+            now = localnow()
             device_time = now.replace(hour=self._time_hour, minute=self._time_minute)
             self._time_offset = device_time - now
         self._is_24_hour = (flag := data[9]) & 0x02 != 0
@@ -801,9 +808,8 @@ class SpaClient(EventMixin):
             await self.request_device_configuration()
         if not self._filter_cycle_loaded or not wait:
             await self.request_filter_cycle()
-        if wait and not await self.async_configuration_loaded(3):
-            if self.connected:
-                await self.request_all_configuration(wait)
+        if wait and not await self.async_configuration_loaded(3) and self.connected:
+            await self.request_all_configuration(wait)
 
     async def request_device_configuration(self) -> None:
         """Request the device configuration."""
@@ -882,17 +888,17 @@ class SpaClient(EventMixin):
             assert self._writer
             self._writer.write(data)
             await self._writer.drain()
-            self._last_message_sent = utcnow()
-        except Exception as ex:  # pylint: disable=broad-except
+            self._last_message_sent = localnow()
+        except Exception as ex:  # pylint: disable=broad-except # noqa: BLE001
             _LOGGER.error("%s ## error sending message: %s", self._host, ex)
 
-    async def __aenter__(self) -> SpaClient:
+    async def __aenter__(self) -> Self:
         """Connect and start listening for messages."""
         if not await self._connect():
             raise SpaConnectionError()
         return self
 
-    async def __aexit__(self, *exctype: Any) -> None:
+    async def __aexit__(self, *exctype: object) -> None:
         """Disconnect."""
         await self.disconnect()
 

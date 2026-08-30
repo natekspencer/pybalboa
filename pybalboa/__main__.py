@@ -5,7 +5,6 @@ import asyncio
 import logging
 import sys
 from enum import IntEnum
-from typing import Union
 
 try:
     from . import SpaClient, SpaConnectionError, SpaControl, __version__
@@ -23,7 +22,7 @@ async def run_discovery(first_spa: bool = True) -> None:
 
 
 async def connect_and_listen(
-    host: Union[str, None] = None, spa: Union[SpaClient, None] = None
+    host: str | None = None, spa: SpaClient | None = None
 ) -> None:
     """Connect to the spa and try some commands."""
     print("******** Testing spa connection and configuration **********")
